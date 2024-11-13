@@ -1,0 +1,35 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:14.5
+    restart: always
+    environment:
+      - POSTGRES_DB=${DATABASE_NAME}
+      - POSTGRES_USER=${DATABASE_USER}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    # environment:
+    #   - NODE_ENV=production
+    #   - DATABASE_HOST=db # Имя сервиса, к которому будет подключаться приложение
+    #   - DATABASE_PORT=5432 # Порт подключения к базе данных
+    #   - DATABASE_NAME=${DATABASE_NAME} # Имя базы данных
+    #   - DATABASE_USER=${DATABASE_USER} # Пользователь базы данных
+    #   - DATABASE_PASSWORD=${DATABASE_PASSWORD} # Пароль базы данных
+    volumes:
+      - ./:/app
+    depends_on:
+      - db
+  
+volumes:
+  postgres_data:
