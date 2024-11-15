@@ -12,4 +12,8 @@ export class NewsService {
   async findAll() {
     return await this.newsRepository.find();
   }
+
+  async findOne(id: number): Promise<News | null> {
+    return await this.newsRepository.findOne({ where: { id } });
+  }
 }
