@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 import { NewsService } from './news.service';
 
 @Controller('news')
@@ -6,8 +6,8 @@ export class NewsController {
   constructor(private readonly newsService: NewsService) {}
 
   @Get()
-  findAll() {
-    return this.newsService.findAll();
+  findAll(@Query('page') page: number = 1) {
+    return this.newsService.findAll(page);
   }
 
   @Get(':id')
